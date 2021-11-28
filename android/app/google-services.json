@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "796028314523",
+    "project_id": "linkedin-harshana",
+    "storage_bucket": "linkedin-harshana.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796028314523:android:05c7eef8263f8d00a9373e",
+        "android_client_info": {
+          "package_name": "com.linkedin_harshana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796028314523-p8dfm3v9rv7t89sq8nqst3ofb4akt2o7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.linkedin_harshana",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "796028314523-54ir431cecnork01v09refhnh7271bvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6VA7PIOe_smye54IQ6Eu5XWT4R2TmQII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796028314523-54ir431cecnork01v09refhnh7271bvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
