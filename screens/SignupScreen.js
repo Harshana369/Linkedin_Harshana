@@ -1,24 +1,30 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
 import {AuthContext} from '../navigation/AuthProvider.android';
 
 const SignupScreen = ({navigation}) => {
+  const [fname, setfname] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
   const {register, googleLogin, fbLogin} = useContext(AuthContext);
 
-  
-
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Create an account</Text>
+
+      <FormInput
+        labelValue={fname}
+        onChangeText={userFname => setfname(userFname)}
+        placeholderText="Full Name"
+        iconType="profile"
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
 
       <FormInput
         labelValue={email}
@@ -37,7 +43,6 @@ const SignupScreen = ({navigation}) => {
         iconType="lock"
         secureTextEntry={true}
       />
-
       <FormInput
         labelValue={confirmPassword}
         onChangeText={userPassword => setConfirmPassword(userPassword)}
@@ -45,10 +50,9 @@ const SignupScreen = ({navigation}) => {
         iconType="lock"
         secureTextEntry={true}
       />
-
       <FormButton
         buttonTitle="Sign Up"
-        onPress={() => register(email, password)}
+        onPress={() => register(fname, email, password)}
       />
 
       <View style={styles.textPrivate}>
@@ -65,26 +69,22 @@ const SignupScreen = ({navigation}) => {
           Privacy Policy
         </Text>
       </View>
-
-      {Platform.OS === 'android' ? (
-        <View>
-          <SocialButton
-            buttonTitle="Sign Up with Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            onPress={() => {}}
-          />
-
-          <SocialButton
-            buttonTitle="Sign Up with Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
-            onPress={() => googleLogin()}
-          />
-        </View>
-      ) : null}
+      <View>
+        <SocialButton
+          buttonTitle="Sign Up with Facebook"
+          btnType="facebook"
+          color="#4867aa"
+          backgroundColor="#e6eaf4"
+          onPress={() => {}}
+        />
+        <SocialButton
+          buttonTitle="Sign Up with Google"
+          btnType="google"
+          color="#de4d41"
+          backgroundColor="#f5e7ea"
+          onPress={() => googleLogin()}
+        />
+      </View>
 
       <TouchableOpacity
         style={styles.navButton}

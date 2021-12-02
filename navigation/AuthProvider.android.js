@@ -34,16 +34,15 @@ export const AuthProvider = ({children}) => {
             await auth()
               .signInWithCredential(googleCredential)
               .then(() => {
-                //console.log('current User', auth().currentUser);
+                // console.log('current User', auth().currentUser);
                 firestore()
                   .collection('users')
                   .doc(auth().currentUser.uid)
                   .set({
-                    fname: '',
-                    lname: '',
+                    fullname: auth().currentUser.displayName,
                     email: auth().currentUser.email,
                     createdAt: firestore.Timestamp.fromDate(new Date()),
-                    userImg: null,
+                    userImg: auth().currentUser.photoURL,
                   })
                   .catch(error => {
                     console.log(
@@ -61,22 +60,21 @@ export const AuthProvider = ({children}) => {
         },
 
         //nomal register
-        register: async (email, password) => {
+        register: async (fname,email,password) => {
           try {
             await auth()
               .createUserWithEmailAndPassword(email, password)
               .then(() => {
-                //console.log(email,password);
-               firestore()
-                 .collection('users')
-                 .doc(auth().currentUser.uid)
-                 .set({
-                   fname: '',
-                   lname: '',
-                   email: email,
-                   createdAt: firestore.Timestamp.fromDate(new Date()),
-                   userImg: null,
-                 });
+               
+                firestore()
+                  .collection('users')
+                  .doc(auth().currentUser.uid)
+                  .set({
+                    fullname: fname,
+                    email: email,
+                    createdAt: firestore.Timestamp.fromDate(new Date()),
+                    userImg: null,
+                  });
               })
               .catch(error => {
                 console.log('Something went wrong with sign up: ', error);
