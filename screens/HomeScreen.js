@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
-import PostCard from './PostCard';
+import PostCard from '../components/PostCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Container} from '../styles/FeedStyles';
 
