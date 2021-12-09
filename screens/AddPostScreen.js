@@ -1,12 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
+  Platform,
   StyleSheet,
   Alert,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
+import ImagePicker from 'react-native-image-crop-picker';
+
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+
 import {
   InputField,
   InputWrapper,
@@ -15,15 +22,16 @@ import {
   SubmitBtnText,
   StatusWrapper,
 } from '../styles/AddPost';
-import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
-import ImagePicker from 'react-native-image-crop-picker';
-import storage from '@react-native-firebase/storage';
+
+import {AuthContext} from '../navigation/AuthProvider';
 
 const AddPostScreen = () => {
+  const {user, logout} = useContext(AuthContext);
+
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
+  const [post, setPost] = useState(null);
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -32,7 +40,7 @@ const AddPostScreen = () => {
       cropping: true,
     }).then(image => {
       console.log(image);
-      const imageUri = image.path;
+      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
       setImage(imageUri);
     });
   };
@@ -50,6 +58,40 @@ const AddPostScreen = () => {
   };
 
   const submitPost = async () => {
+    const imageUrl = await uploadImage();
+    console.log('Image Url: ', imageUrl);
+    console.log('Post: ', post);
+
+    firestore()
+      .collection('posts')
+      .add({
+        userId: user.uid,
+        post: post,
+        postImg: imageUrl,
+        postTime: firestore.Timestamp.fromDate(new Date()),
+        likes: null,
+        comments: null,
+      })
+      .then(() => {
+        console.log('Post Added!');
+        Alert.alert(
+          'Post published!',
+          'Your post has been published Successfully!',
+        );
+        setPost(null);
+      })
+      .catch(error => {
+        console.log(
+          'Something went wrong with added post to firestore.',
+          error,
+        );
+      });
+  };
+
+  const uploadImage = async () => {
+    if (image == null) {
+      return null;
+    }
     const uploadUri = image;
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
 
@@ -61,7 +103,8 @@ const AddPostScreen = () => {
     setUploading(true);
     setTransferred(0);
 
-    const task = storage().ref(filename).putFile(uploadUri);
+    const storageRef = storage().ref(`photos/${filename}`);
+    const task = storageRef.putFile(uploadUri);
 
     // Set transferred state
     task.on('state_changed', taskSnapshot => {
@@ -78,16 +121,20 @@ const AddPostScreen = () => {
     try {
       await task;
 
+      const url = await storageRef.getDownloadURL();
+
       setUploading(false);
-      Alert.alert(
-        'Image uploaded!',
-        'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
-      );
+      setImage(null);
+
+      // Alert.alert(
+      //   'Image uploaded!',
+      //   'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
+      // );
+      return url;
     } catch (e) {
       console.log(e);
+      return null;
     }
-
-    setImage(null);
   };
 
   return (
@@ -99,6 +146,8 @@ const AddPostScreen = () => {
           placeholder="What's on your mind?"
           multiline
           numberOfLines={4}
+          value={post}
+          onChangeText={content => setPost(content)}
         />
         {uploading ? (
           <StatusWrapper>
