@@ -22,14 +22,14 @@ const LoginScreen = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
-        source={require('../assets/rn-social-logo.png')}
+        source={require('../assets/LinkedIn-Logo.wine.png')}
         style={styles.logo}
       />
-      <Text style={styles.text}>Harshana Linkedin App</Text>
+      {/* <Text style={styles.text}>Harshana Linkedin App</Text> */}
 
       <FormInput
         labelValue={email}
-        onChangeText={(userEmail) => setEmail(userEmail)}
+        onChangeText={userEmail => setEmail(userEmail)}
         placeholderText="Email"
         iconType="user"
         keyboardType="email-address"
@@ -39,7 +39,7 @@ const LoginScreen = ({navigation}) => {
 
       <FormInput
         labelValue={password}
-        onChangeText={(userPassword) => setPassword(userPassword)}
+        onChangeText={userPassword => setPassword(userPassword)}
         placeholderText="Password"
         iconType="lock"
         secureTextEntry={true}
@@ -67,7 +67,7 @@ const LoginScreen = ({navigation}) => {
           <SocialButton
             buttonTitle="Sign In with Google"
             btnType="google"
-            color="#de4d41"
+            color="#0077B5"
             backgroundColor="#f5e7ea"
             onPress={() => googleLogin()}
           />
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     paddingTop: 50
   },
   logo: {
-    height: 150,
-    width: 150,
+    height: 120,
+    width: 350,
     resizeMode: 'cover',
   },
   text: {

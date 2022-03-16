@@ -49,19 +49,19 @@ const OnboardingScreen = ({navigation}) => {
       onDone={() => navigation.navigate('Login')}
       pages={[
         {
-          backgroundColor: '#a6e4d0',
+          backgroundColor: '#00A0DC',
           image: <Image source={require('../assets/onboarding-img1.png')} />,
           title: 'Connect to the World',
           subtitle: 'A New Way To Connect With The World',
         },
         {
-          backgroundColor: '#fdeb93',
+          backgroundColor: '#CACCCE',
           image: <Image source={require('../assets/onboarding-img2.png')} />,
           title: 'Share Your Favorites',
           subtitle: 'Share Your Thoughts With Similar Kind of People',
         },
         {
-          backgroundColor: '#e9bcbe',
+          backgroundColor: '#0077B5',
           image: <Image source={require('../assets/onboarding-img3.png')} />,
           title: 'Become The Star',
           subtitle: 'Let The Spot Light Capture You',
